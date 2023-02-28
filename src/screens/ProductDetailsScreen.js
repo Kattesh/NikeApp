@@ -1,16 +1,18 @@
 import products from "../data/products";
 import {FlatList, Image, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View} from "react-native";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {cartSlice} from "../store/cartSlice";
 
 
 const ProductDetailsScreen = () => {
+    const dispatch = useDispatch()
     //use it to make the image full-width.
     const {width} = useWindowDimensions();
 
     const product = useSelector((state) => state.products.selectedProduct);
 
-    const addToCart=()=>{
-        console.warn('Add to cart')
+    const addToCart = () => {
+        dispatch(cartSlice.actions.addCartItem({product}))
     }
 
     return (
@@ -43,7 +45,7 @@ const ProductDetailsScreen = () => {
             </ScrollView>
 
             {/* Add to cart button */}
-            <Pressable style={styles.button} onPress={addToCart} >
+            <Pressable style={styles.button} onPress={addToCart}>
                 <Text style={styles.buttonText}>Add to cart</Text>
             </Pressable>
             {/* Navigation icon */}
