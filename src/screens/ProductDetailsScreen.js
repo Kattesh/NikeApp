@@ -21,10 +21,13 @@ const ProductDetailsScreen = ({route}) => {
     const dispatch = useDispatch()
     //use it to make the image full-width.
     const {width} = useWindowDimensions();
+
+    // const product = useSelector((state) => state.products.selectedProduct);
+    const product = data?.data;
+
     const addToCart = () => {
         dispatch(cartSlice.actions.addCartItem({product}))
     }
-
 
     if (isLoading) {
         return <ActivityIndicator/>;
@@ -32,8 +35,7 @@ const ProductDetailsScreen = ({route}) => {
     if (error) {
         return <Text>Error fetching the product. {error.error}</Text>;
     }
-    // const product = useSelector((state) => state.products.selectedProduct);
-    const product = data.data;
+
 
     return (
         <View>
