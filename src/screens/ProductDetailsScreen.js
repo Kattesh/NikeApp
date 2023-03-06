@@ -1,19 +1,39 @@
 import products from "../data/products";
-import {FlatList, Image, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View} from "react-native";
+import {
+    ActivityIndicator,
+    FlatList,
+    Image,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    useWindowDimensions,
+    View
+} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {cartSlice} from "../store/cartSlice";
+import {useGetProductQuery} from "../store/apiSlice";
 
 
-const ProductDetailsScreen = () => {
+const ProductDetailsScreen = ({route}) => {
+
+    const {data, error, isLoading} = useGetProductQuery(route.params.id);
     const dispatch = useDispatch()
     //use it to make the image full-width.
     const {width} = useWindowDimensions();
-
-    const product = useSelector((state) => state.products.selectedProduct);
-
     const addToCart = () => {
         dispatch(cartSlice.actions.addCartItem({product}))
     }
+
+
+    if (isLoading) {
+        return <ActivityIndicator/>;
+    }
+    if (error) {
+        return <Text>Error fetching the product. {error.error}</Text>;
+    }
+    // const product = useSelector((state) => state.products.selectedProduct);
+    const product = data.data;
 
     return (
         <View>
